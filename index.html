@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Turbo Kart Rally</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <div id="game-root">
+    <canvas id="game-canvas"></canvas>
+    <div id="ui-root"></div>
+    <div id="touch-controls" aria-label="Driving controls">
+      <div class="touch-steering" aria-label="Steering">
+        <button class="touch-button touch-steer" type="button" data-key="ArrowLeft" aria-label="Steer left">◀</button>
+        <button class="touch-button touch-steer" type="button" data-key="ArrowRight" aria-label="Steer right">▶</button>
+      </div>
+      <div class="touch-driving" aria-label="Driving and race controls">
+        <button class="touch-button touch-action touch-item" type="button" data-key="KeyE" aria-label="Use item">ITEM</button>
+        <button class="touch-button touch-action touch-drift" type="button" data-key="Space" aria-label="Drift">DRIFT</button>
+        <button class="touch-button touch-action touch-brake" type="button" data-key="ArrowDown" aria-label="Brake">BRAKE</button>
+        <button class="touch-button touch-action touch-accelerate" type="button" data-key="ArrowUp" aria-label="Accelerate">GO</button>
+        <button class="touch-button touch-action touch-pause" type="button" aria-label="Pause" title="Pause">Ⅱ</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

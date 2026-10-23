@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.turbokartrally.samsung'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.turbokartrally.samsung'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+def isWindowsHost = org.gradle.internal.os.OperatingSystem.current().isWindows()
+tasks.register('buildGameAssets', Exec) {
+    workingDir rootProject.projectDir.parentFile
+    if (isWindowsHost) {
+        commandLine 'cmd', '/c', 'npm', 'run', 'build'
+    } else {
+        commandLine 'npm', 'run', 'build'
+    }
+}
+tasks.named('preBuild').configure { dependsOn 'buildGameAssets' }
+
+tasks.register('buildSamsungApk') {
+    dependsOn 'assembleDebug'
+    doLast {
+        def apk = layout.buildDirectory.file('outputs/apk/debug/app-debug.apk').get().asFile
+        if (!apk.isFile()) throw new GradleException("Debug APK not found: ${apk}")
+        def destination = new File(rootProject.projectDir.parentFile, 'apk/Turbo-Kart-Rally-Samsung.apk')
+        destination.parentFile.mkdirs()
+        destination.bytes = apk.bytes
+        logger.lifecycle("Samsung APK created: ${destination}")
+    }
+}
