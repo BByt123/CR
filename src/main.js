@@ -31,7 +31,8 @@ function safe(tag, fn) {
 // ---------------------------------------------------------------------------------------------
 const canvas = document.getElementById('game-canvas');
 const uiRoot = document.getElementById('ui-root');
-const touchDevice = window.matchMedia('(pointer: coarse)').matches || /Android|iPhone|iPad/i.test(navigator.userAgent);
+const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(any-pointer: coarse)').matches;
+const touchDevice = hasCoarsePointer || (navigator.maxTouchPoints || 0) > 0 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 document.body.classList.toggle('touch-enabled', touchDevice);
 const pixelRatio = Math.min(window.devicePixelRatio || 1, touchDevice ? 1.35 : 2);
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
@@ -69,6 +70,8 @@ function onResize() {
   bloom.setSize(w, h);
 }
 window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', onResize, { passive: true });
+if (window.visualViewport) window.visualViewport.addEventListener('resize', onResize, { passive: true });
 
 // ---------------------------------------------------------------------------------------------
 // Modules from other agents are loaded dynamically so a broken file degrades instead of killing the game.
@@ -416,6 +419,7 @@ if (touchDevice) {
     window.dispatchEvent(new KeyboardEvent(type, { code, bubbles: true }));
   });
 }
+document.querySelector('.touch-start').addEventListener('click', () => beginCountdown());
 document.querySelector('.touch-pause').addEventListener('click', () => pause());
 window.addEventListener('blur', () => {
   releaseTouchControls();
