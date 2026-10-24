@@ -35,7 +35,15 @@ const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches || windo
 const touchDevice = hasCoarsePointer || (navigator.maxTouchPoints || 0) > 0 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 document.body.classList.toggle('touch-enabled', touchDevice);
 const pixelRatio = Math.min(window.devicePixelRatio || 1, touchDevice ? 1.35 : 2);
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+} catch (error) {
+  console.error('[boot] WebGL is unavailable', error);
+  document.body.classList.add('boot-error');
+  uiRoot.innerHTML = '<div class="boot-error-message"><h1>Turbo Kart Rally</h1><p>WebGL could not start in this browser. Try Chrome, Edge, Safari, or enable hardware acceleration.</p><button type="button" onclick="location.reload()">RELOAD</button></div>';
+  throw error;
+}
 renderer.setPixelRatio(pixelRatio);
 renderer.userData = { mobile: touchDevice };
 renderer.setSize(window.innerWidth, window.innerHeight, false);
