@@ -1,0 +1,12 @@
+{
+  "name": "Turbo Kart Rally",
+  "short_name": "Turbo Kart",
+  "description": "A touch-friendly 3D kart racer.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "icons": []
+}

@@ -23,6 +23,12 @@ npm run dev
 
 Open the local URL printed by Vite. Use WASD or the arrow keys, Space to drift, E to use an item, and Escape to pause. Use a gamepad or touch screen as well.
 
+### GitHub Pages
+
+Push the `main` branch to `https://github.com/BByt123/CR`. The included `.github/workflows/deploy-pages.yml` runs the tests, builds the web site into `dist/`, and deploys it to GitHub Pages. In the repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**. After the workflow finishes, the game will be available at `https://bbyt123.github.io/CR/`.
+
+For a phone or tablet, deploy the repository with GitHub Pages or open the Vite URL on the device. The game detects touch hardware automatically and shows large multi-touch steering, throttle, brake, drift, item, and pause controls. Both portrait and landscape layouts are supported; landscape gives the widest race view. The browser page also includes a web-app manifest so supported mobile browsers can add it to the home screen.
+
 ## Build and tests
 
 ```powershell
@@ -30,4 +36,4 @@ npm test
 npm run build
 ```
 
-The production game bundle is written to `android/app/src/main/assets/game/` so Android can package it for offline use.
+`npm run build` writes the production web bundle to `dist/` for GitHub Pages. The APK command sets the Android build target and writes its offline bundle to `android/app/src/main/assets/game/`.

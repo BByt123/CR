@@ -42,7 +42,14 @@ try {
         Invoke-BuildTool 'npm.cmd' @('install', '--no-audit', '--no-fund')
     }
     Invoke-BuildTool 'npm.cmd' @('test')
-    Invoke-BuildTool 'npm.cmd' @('run', 'build')
+    $previousBuildTarget = $env:BUILD_TARGET
+    $env:BUILD_TARGET = 'android'
+    try {
+        Invoke-BuildTool 'npm.cmd' @('run', 'build')
+    } finally {
+        if ($null -eq $previousBuildTarget) { Remove-Item Env:BUILD_TARGET -ErrorAction SilentlyContinue }
+        else { $env:BUILD_TARGET = $previousBuildTarget }
+    }
 
     # Use the same source manifest as Android Studio, adding the SDK/package fields for aapt2.
     $source = Join-Path $project 'android\app\src\main'
